@@ -1,0 +1,20 @@
+<?xml version = "1.0"?>
+<resources>
+  <set path = "images" />
+  <atlas>
+    <image file="chess_board.png" />
+    <image file="b_king.png" />
+    <image file="b_pawn.png" />
+    <image file="b_queen.png" />
+    <image file="b_knight.png" />
+    <image file="b_bishop.png" />
+    <image file="b_rook.png" />
+
+    <image file="w_king.png" />
+    <image file="w_pawn.png" />
+    <image file="w_queen.png" />
+    <image file="w_knight.png" />
+    <image file="w_bishop.png" />
+    <image file="w_rook.png" />
+  </atlas>
+</resources>
