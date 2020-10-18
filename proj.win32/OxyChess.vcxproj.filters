@@ -50,4 +50,9 @@
       <Filter>Resource Files</Filter>
     </Xml>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\data\boardConfig.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+  </ItemGroup>
 </Project>

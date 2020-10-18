@@ -1,58 +1,97 @@
 #include "board.h"
 #include "resourcemanager.h"
 #include <iostream>
+#include <fstream>
 using namespace std;
 
 Board::Board(int w, int h, Vector2 pos)
 {
 	setSize(w, h);
 	setPosition(pos);
+
 	background = new Sprite;
 	background->setResAnim(ResourceManager::instance().getAnim("chess_board"));
 	background->setSize(w, h);
 	background->attachTo(this);
 	background->addEventListener(TouchEvent::TOUCH_DOWN, CLOSURE(this, &Board::touched));
-	Vector2 figSize = {float(w/8), float(h/8)};
-	Point figPos = { 0, 0 };
-	spFigure f1 = new Figure(WHITE);
-	figures.push_back({ figPos, f1 });
-	f1->setResAnim(ResourceManager::instance().getAnim("b_king"));
-	f1->attachTo(this);
-	f1->setPosition(figPos);
-	f1->setSize(figSize);
+	background->setTouchChildrenEnabled(false);
+
+	cellSize = {float(w/8), float(h/8)};
+	initFigures();
 }
 
-void Board::update(const UpdateState& us) {
-
-}
 
 void Board::resetFigures()
 {
-	for (int i = 0; i < 2; i++) {
-		FigureType type = FigureType(i);
-		char resPrefix = type == WHITE ? 'w' : 'b';
-		spFigure rook1 = new Figure(type);
-		spFigure rook2 = new Figure(type);
-		spFigure knight1 = new Figure(type);
-		spFigure rook2 = new Figure(type);
-		spFigure rook1 = new Figure(type);
-		spFigure rook2 = new Figure(type);
-
-	}
+	figures.clear();
+	initFigures();
 }
 
-void Board::setPair(Figure fig, Point pos) {
-
+bool Board::isPlayersFigure()
+{
+	return false;
 }
 
 void Board::touched(Event* event){
-	cout << "Touch event\n";
-	TouchEvent* tev = static_cast<TouchEvent*>(event);
-	cout << tev->position.x << ", " << tev->position.x << endl;
+	std::cout << "Touch event\n";
+	TouchEvent* tev = safeCast<TouchEvent*>(event);
+	Point touchedCell = getCell(tev->localPosition);
+	if (selectedFigure) {
+		selectedFigure->setColor(Color(255, 255, 255));
+		selectedFigure = nullptr;
+	}
+	for (auto& i : figures) {
+		if (i.pos == touchedCell){
+			selectedFigure = i.figure.get();
+			selectedFigure->setColor(Color(0, 255, 0));
+		}
+	}
+}
+
+Vector2 Board::getCellPos(Point cell)
+{
+	return Vector2{ cell.x*cellSize.x, cell.y*cellSize.y };
+}
+
+Point Board::getCell(Vector2 pos)
+{
+	return Point(int(pos.x/cellSize.x),
+		int(pos.y /cellSize.y));
+}
+
+void Board::initFigures()
+{
+	ifstream input("boardConfig.txt");
+	if (!input){
+		std::cout << "No such file\n";
+		return;
+	}
+	string figureTag;
+
+	int x, y;
+	for(int k = 0; k < 32; k++){
+		input >> x >> y;
+		input >> figureTag;
+		FigureType type = WHITE;
+		if (figureTag[0] == 'b')
+			type = BLACK;
+		Point p = { x, y };
+		auto f = initActor(new Figure(type),
+			arg_pos = getCellPos(p),
+			arg_attachTo = this,
+			arg_resAnim = ResourceManager::instance().getAnim(figureTag),
+			arg_size = cellSize
+			);
+		figures.push_back({ p,f });
+	}
 }
 
 Board::~Board()
 {
+	for (auto& f : figures) {
+		f.figure->detach();
+	}
+	figures.clear();
 	background->detach();
 	background = nullptr;
 }

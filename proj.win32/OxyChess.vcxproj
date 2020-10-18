@@ -133,6 +133,9 @@
       <SubType>Designer</SubType>
     </Xml>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\data\boardConfig.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

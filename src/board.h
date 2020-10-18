@@ -1,33 +1,35 @@
 #pragma once
-#include <vector>
+#include <map>
+#include <cmath>
 #include <oxygine-framework.h>
 using namespace oxygine;
 using namespace std;
 
 #include "figure.h"
 
-DECLARE_SMART(Board, spBoard);
-
-
 struct Item {
 	Point pos;
 	spFigure figure;
 };
+
+DECLARE_SMART(Board, spBoard);
 
 class Board: public Actor
 {
 public:
 	Board(int w, int h, Vector2 pos);
 	~Board();
-	void update(const UpdateState& us);
 	void resetFigures();
-	void setPair(Figure fig, Point pos);
-	//bool isAnyFigures();
+	bool isPlayersFigure();
 
 private:
 	vector<Item> figures;
 	spSprite background;
+	Vector2 cellSize;
+	Figure* selectedFigure = nullptr;
 
 	void touched(Event * event);
+	Vector2 getCellPos(Point cell);
+	Point getCell(Vector2 pos);
+	void initFigures();
 };
-
