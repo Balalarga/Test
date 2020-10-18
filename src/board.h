@@ -5,15 +5,7 @@
 using namespace oxygine;
 using namespace std;
 
-#include "figure.h"
-
-struct Item {
-	Point pos;
-	spFigure figure;
-	bool operator==(const Item& other) {
-		return pos == other.pos && figure == other.figure;
-	}
-};
+#include "figures/figure.h"
 
 DECLARE_SMART(Board, spBoard);
 
@@ -26,15 +18,15 @@ public:
 	bool isPlayersFigure();
 
 private:
-	vector<Item> figures;
+	vector<spFigure> figures;
 	spSprite background;
 	Vector2 cellSize;
-	Item* selectedItem = nullptr;
+	spFigure selectedItem = nullptr;
 
 	void initFigures();
 
 	void touched(Event* event);
 	Vector2 getCellPos(Point cell);
 	Point getCell(Vector2 pos);
-	Item* getTouched(Point touchedCell);
+	spFigure getTouched(Point touchedCell);
 };

@@ -1,4 +1,10 @@
 #include "board.h"
+#include "figures\bishop.h"
+#include "figures\king.h"
+#include "figures\queen.h"
+#include "figures\knight.h"
+#include "figures\pawn.h"
+#include "figures\rook.h"
 #include "resourcemanager.h"
 #include <iostream>
 #include <fstream>
@@ -24,8 +30,8 @@ Board::Board(int w, int h, Vector2 pos)
 void Board::resetFigures()
 {
 	for (auto& i : figures) {
-		i.figure->detach();
-		i.figure = 0;
+		i->detach();
+		i = 0;
 	}
 	figures.clear();
 	initFigures();
@@ -35,7 +41,7 @@ bool Board::isPlayersFigure()
 {
 	bool findTypes[] = { false, false };
 	for (auto& i : figures) {
-		findTypes[i.figure->getType()] = true;
+		findTypes[i->getType()] = true;
 		if (findTypes[0] && findTypes[1])
 			return true;
 	}
@@ -45,31 +51,39 @@ bool Board::isPlayersFigure()
 void Board::touched(Event* event) {
 
 	TouchEvent* tev = safeCast<TouchEvent*>(event);
-	Item* touchedItem = getTouched(getCell(tev->localPosition));
+	Point newCellPos = getCell(tev->localPosition);
+	Vector2 newRawPos = getCellPos(newCellPos);
+	spFigure touchedItem = getTouched(newCellPos);
 
 	if (selectedItem) {
-		selectedItem->figure->setColor(Color(255, 255, 255));
-		if (!touchedItem)
-			selectedItem = nullptr;
-		else {
-			if (selectedItem->figure->getType() == touchedItem->figure->getType()) {
-				selectedItem = touchedItem;
-				selectedItem->figure->setColor(Color(0, 200, 0));
+		selectedItem->setColor(Color(255, 255, 255));
+		if (!touchedItem) {
+			if (selectedItem->nextStepCheck(newCellPos)) {
+				selectedItem->setCell(newCellPos);
+				selectedItem->setPosition(newRawPos);
+				selectedItem = nullptr;
 			}
 			else {
-				Point newCellPos = touchedItem->pos;
-				Vector2 newRawPos = touchedItem->figure->getPosition();
+				selectedItem = nullptr;
+			}
+		}
+		else {
+			if (selectedItem->getType() == touchedItem->getType()) {
+				selectedItem = touchedItem;
+				selectedItem->setColor(Color(0, 200, 0));
+			}
+			else if (selectedItem->nextStepCheck(newCellPos)) {
 				int deleteIndex = 0;
 				for (int i = 0; i < figures.size(); i++) {
-					if (&figures[i] == touchedItem) {
-						figures[i].figure->detach();
-						figures[i].figure = 0;
+					if (figures[i] == touchedItem) {
+						figures[i]->detach();
+						figures[i] = 0;
 						deleteIndex = i;
 						break;
 					}
 				}
-				selectedItem->pos = newCellPos;
-				selectedItem->figure->setPosition(newRawPos);
+				selectedItem->setCell(newCellPos);
+				selectedItem->setPosition(newRawPos);
 				selectedItem = nullptr;
 				figures.erase(figures.begin() + deleteIndex);
 				if (!isPlayersFigure()) {
@@ -80,7 +94,7 @@ void Board::touched(Event* event) {
 	}
 	else if(touchedItem){
 		selectedItem = touchedItem;
-		selectedItem->figure->setColor(Color(0, 200, 0));
+		selectedItem->setColor(Color(0, 200, 0));
 	}
 
 }
@@ -113,30 +127,48 @@ void Board::initFigures()
 		if (figureTag[0] == 'b')
 			type = BLACK;
 		Point p = { x, y };
-		auto f = initActor(new Figure(type),
-			arg_pos = getCellPos(p),
-			arg_attachTo = this,
-			arg_resAnim = ResourceManager::instance().getAnim(figureTag),
-			arg_size = cellSize
-			);
-		figures.push_back({ p, f });
+		string figName = figureTag.substr(2);
+		spFigure f;
+		if (figName == "bishop") {
+			f = new Bishop(type, p);
+		}else if (figName == "king") {
+			f = new King(type, p);
+		}
+		else if(figName == "pawn") {
+			f = new Pawn(type, p);
+		}
+		else if(figName == "queen") {
+			f = new Queen(type, p);
+		}
+		else if (figName == "knight") {
+			f = new Knight(type, p);
+		}
+		else if (figName == "rook") {
+			f = new Rook(type, p);
+		}
+		f->attachTo(this);
+		f->setPosition(getCellPos(p));
+		f->setResAnim(ResourceManager::instance().getAnim(figureTag));
+		f->setSize(cellSize);
+
+		figures.push_back(f);
 	}
 	input.close();
 }
 
-Item* Board::getTouched(Point touchedCell)
+spFigure Board::getTouched(Point touchedCell)
 {
 	for (auto& i : figures) {
-		if (i.pos == touchedCell)
-			return &i;
+		if (i->getCell() == touchedCell)
+			return i;
 	}
 	return nullptr;
 }
 
 void Board::free() {
 	for (auto& f : figures) {
-		f.figure->detach();
-		f.figure = 0;
+		f->detach();
+		f = 0;
 	}
 	figures.clear();
 	background->detach();

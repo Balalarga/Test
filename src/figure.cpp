@@ -1,14 +1,5 @@
-#include "figure.h"
+#include "figures\figure.h"
 
-
-
-Figure::Figure(FigureType t):
-	type(t)
+Figure::~Figure()
 {
 }
-
-FigureType Figure::getType() const
-{
-	return type;
-}
-

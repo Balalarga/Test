@@ -118,14 +118,26 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\board.cpp" />
-    <ClCompile Include="..\src\figure.cpp" />
+    <ClCompile Include="..\src\figures\bishop.cpp" />
+    <ClCompile Include="..\src\figures\figure.cpp" />
+    <ClCompile Include="..\src\figures\king.cpp" />
+    <ClCompile Include="..\src\figures\knight.cpp" />
+    <ClCompile Include="..\src\figures\pawn.cpp" />
+    <ClCompile Include="..\src\figures\queen.cpp" />
+    <ClCompile Include="..\src\figures\rook.cpp" />
     <ClCompile Include="..\src\game.cpp" />
     <ClCompile Include="..\src\main.cpp" />
     <ClCompile Include="..\src\resourcemanager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\board.h" />
-    <ClInclude Include="..\src\figure.h" />
+    <ClInclude Include="..\src\figures\bishop.h" />
+    <ClInclude Include="..\src\figures\figure.h" />
+    <ClInclude Include="..\src\figures\king.h" />
+    <ClInclude Include="..\src\figures\knight.h" />
+    <ClInclude Include="..\src\figures\pawn.h" />
+    <ClInclude Include="..\src\figures\queen.h" />
+    <ClInclude Include="..\src\figures\rook.h" />
     <ClInclude Include="..\src\game.h" />
     <ClInclude Include="..\src\resourcemanager.h" />
   </ItemGroup>
