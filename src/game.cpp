@@ -20,10 +20,6 @@ Game::Game()
 
 }
 
-void Game::preinit()
-{
-}
-
 void Game::init()
 {
 	ResourceManager::instance().load("resources.xml");
@@ -43,14 +39,6 @@ void Game::init()
 void Game::destroy()
 {
 	ResourceManager::instance().free();
-}
-
-void Game::update()
-{
-
-}
-
-void Game::flush()
-{
-
+	board->free();
+	board = 0;
 }

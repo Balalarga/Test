@@ -6,13 +6,14 @@ using namespace oxygine;
 DECLARE_SMART(Figure, spFigure);
 
 enum FigureType {
-	WHITE = 0, BLACK
+	WHITE, BLACK
 };
 
 class Figure: public Sprite
 {
 public:
 	Figure(FigureType t);
+	FigureType getType() const;
 
 private:
 	FigureType type;

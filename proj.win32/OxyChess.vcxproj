@@ -81,11 +81,12 @@
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <GenerateDebugInformation>Debug</GenerateDebugInformation>
       <AdditionalDependencies>
       </AdditionalDependencies>
       <AdditionalLibraryDirectories>../../../Libs/oxygine-framework-with-sdl/oxygine-framework//oxygine/third_party/win32/libraries;../../../Libs/oxygine-framework-with-sdl/oxygine-framework//libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>/ignore:4099 %(AdditionalOptions)</AdditionalOptions>
+      <ProgramDatabaseFile />
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

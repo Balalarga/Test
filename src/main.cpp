@@ -22,7 +22,6 @@ int mainloop()
     bool done = core::update();
 
     // It gets passed to our example game implementation
-    Game::instance().update();
 
     // Update our stage
     // Update all actors. Actor::update will also be called for all its children
@@ -55,7 +54,6 @@ void run()
     desc.h = 640;
 
 
-	Game::instance().preinit();
     core::init(&desc);
 
 

@@ -7,3 +7,8 @@ Figure::Figure(FigureType t):
 {
 }
 
+FigureType Figure::getType() const
+{
+	return type;
+}
+

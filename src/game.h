@@ -6,11 +6,8 @@ class Game {
 public:
 	static Game& instance();
 
-	void preinit();
 	void init();
 	void destroy();
-	void update();
-	void flush();
 
 
 private:
