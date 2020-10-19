@@ -17,7 +17,6 @@ Game & Game::instance()
 
 Game::Game()
 {
-
 }
 
 void Game::init()
@@ -28,9 +27,8 @@ void Game::init()
 	int boardSize = windowSize.y;
 	if (windowSize.x < windowSize.y)
 		boardSize = windowSize.x;
-	Vector2 boardPos;
-	boardPos.x = (windowSize.x - boardSize) / 2;
-	boardPos.y = (windowSize.y - boardSize) / 2;
+	Vector2 boardPos{ (windowSize.x - boardSize) / 2 ,
+		(windowSize.y - boardSize) / 2 };
 
 	board = new Board(boardSize, boardSize, boardPos);
 	board->attachTo(getStage());

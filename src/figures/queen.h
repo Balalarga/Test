@@ -7,7 +7,8 @@ class Queen : public Figure
 {
 public:
 	Queen(FigureType t, Point cell);
-	bool nextStepCheck(Point nextCell) override;
+	virtual bool canGoTo(Point cell) override;
+	virtual bool canBeat(Point cell) override;
 private:
 
 };

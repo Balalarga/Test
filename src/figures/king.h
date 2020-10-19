@@ -8,7 +8,8 @@ class King : public Figure
 {
 public:
 	King(FigureType t, Point cell);
-	bool nextStepCheck(Point nextCell) override;
+	virtual bool canGoTo(Point cell) override;
+	virtual bool canBeat(Point cell) override;
 
 private:
 

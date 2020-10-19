@@ -17,7 +17,8 @@ public:
 	Point getCell();
 	void setCell(Point newCell);
 
-	virtual bool nextStepCheck(Point nextCell) = 0;
+	virtual bool canGoTo(Point cell) = 0;
+	virtual bool canBeat(Point cell) = 0;
 	virtual ~Figure();
 
 protected:

@@ -5,7 +5,13 @@ Bishop::Bishop(FigureType t, Point cell):
 {
 }
 
-bool Bishop::nextStepCheck(Point nextCell)
+
+bool Bishop::canGoTo(Point cell)
 {
-	return abs(nextCell.x-boardCell.x) == abs(nextCell.y-boardCell.y);
+	return abs(cell.x - boardCell.x) == abs(cell.y - boardCell.y);
+}
+
+bool Bishop::canBeat(Point cell)
+{
+	return canGoTo(cell);
 }

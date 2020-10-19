@@ -51,16 +51,16 @@ bool Board::isPlayersFigure()
 void Board::touched(Event* event) {
 
 	TouchEvent* tev = safeCast<TouchEvent*>(event);
-	Point newCellPos = getCell(tev->localPosition);
-	Vector2 newRawPos = getCellPos(newCellPos);
-	spFigure touchedItem = getTouched(newCellPos);
+	Point newCell = getCell(tev->localPosition);
+	Vector2 newCellPos = getCellPos(newCell);
+	spFigure touchedItem = getTouched(newCell);
 
 	if (selectedItem) {
 		selectedItem->setColor(Color(255, 255, 255));
 		if (!touchedItem) {
-			if (selectedItem->nextStepCheck(newCellPos)) {
-				selectedItem->setCell(newCellPos);
-				selectedItem->setPosition(newRawPos);
+			if (selectedItem->canGoTo(newCell)) {
+				selectedItem->setCell(newCell);
+				selectedItem->setPosition(newCellPos);
 				selectedItem = nullptr;
 			}
 			else {
@@ -72,7 +72,7 @@ void Board::touched(Event* event) {
 				selectedItem = touchedItem;
 				selectedItem->setColor(Color(0, 200, 0));
 			}
-			else if (selectedItem->nextStepCheck(newCellPos)) {
+			else if (selectedItem->canBeat(newCell)) {
 				int deleteIndex = 0;
 				for (int i = 0; i < figures.size(); i++) {
 					if (figures[i] == touchedItem) {
@@ -82,8 +82,8 @@ void Board::touched(Event* event) {
 						break;
 					}
 				}
-				selectedItem->setCell(newCellPos);
-				selectedItem->setPosition(newRawPos);
+				selectedItem->setCell(newCell);
+				selectedItem->setPosition(newCellPos);
 				selectedItem = nullptr;
 				figures.erase(figures.begin() + deleteIndex);
 				if (!isPlayersFigure()) {

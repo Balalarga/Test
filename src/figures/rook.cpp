@@ -5,8 +5,13 @@ Rook::Rook(FigureType t, Point cell):
 {
 }
 
-bool Rook::nextStepCheck(Point nextCell)
+bool Rook::canGoTo(Point cell)
 {
-	return (nextCell.x == boardCell.x && nextCell.y != boardCell.y) ||
-		(nextCell.y == boardCell.y && nextCell.x != boardCell.x);
+	return (cell.x == boardCell.x && cell.y != boardCell.y) ||
+		(cell.y == boardCell.y && cell.x != boardCell.x);;
+}
+
+bool Rook::canBeat(Point cell)
+{
+	return canGoTo(cell);
 }

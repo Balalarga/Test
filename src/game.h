@@ -8,6 +8,8 @@ public:
 
 	void init();
 	void destroy();
+	void resetFigures();
+	bool isPlayersFigure();
 
 
 private:
@@ -15,5 +17,13 @@ private:
 
 	Game();
 	spBoard board;
-
+	vector<spFigure> figures;
+	Vector2 cellSize;
+	spFigure selectedItem = nullptr;
+	
+	void initFigures();
+	Vector2 getCellPos(Point cell);
+	Point getCell(Vector2 pos);
+	spFigure getTouched(Point touchedCell);
+	void touched(Event* event);
 };

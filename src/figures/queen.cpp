@@ -5,9 +5,15 @@ Queen::Queen(FigureType t, Point cell) :
 {
 }
 
-bool Queen::nextStepCheck(Point nextCell)
+
+bool Queen::canGoTo(Point cell)
 {
-	return abs(nextCell.x - boardCell.x) == abs(nextCell.y - boardCell.y) ||
-		(nextCell.x == boardCell.x && nextCell.y != boardCell.y) ||
-		(nextCell.y == boardCell.y && nextCell.x != boardCell.x);
+	return abs(cell.x - boardCell.x) == abs(cell.y - boardCell.y) ||
+		(cell.x == boardCell.x && cell.y != boardCell.y) ||
+		(cell.y == boardCell.y && cell.x != boardCell.x);
+}
+
+bool Queen::canBeat(Point cell)
+{
+	return canGoTo(cell);
 }

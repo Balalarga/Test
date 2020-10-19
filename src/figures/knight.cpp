@@ -5,7 +5,13 @@ Knight::Knight(FigureType t, Point cell) :
 {
 }
 
-bool Knight::nextStepCheck(Point nextCell)
+bool Knight::canGoTo(Point cell)
 {
-	return false;
+	return (abs(boardCell.x - cell.x) == 1 && abs(boardCell.y - cell.y) == 2) ||
+		(abs(boardCell.x - cell.x) == 2 && abs(boardCell.y - cell.y) == 1);
+}
+
+bool Knight::canBeat(Point cell)
+{
+	return canGoTo(cell);
 }

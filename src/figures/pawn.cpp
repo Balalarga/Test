@@ -5,13 +5,39 @@ Pawn::Pawn(FigureType t, Point cell) :
 {
 }
 
-bool Pawn::nextStepCheck(Point nextCell)
+
+bool Pawn::canGoTo(Point cell)
 {
-	if (type == WHITE) {
-		if (boardCell.y == 1)
-			return nextCell.y <= 3;
+	if (cell.x != boardCell.x)
+		return false;
+
+	if (type == BLACK)
+	{
+		if (boardCell.y == 1) {
+			return cell.y - boardCell.y <= 2;
+		}
 		else
-			return nextCell.y - boardCell.y == 1;
+		{
+			return cell.y - boardCell.y == 1;
+		}
 	}
-	return false;
+	else {
+		if (boardCell.y == 6) {
+			return boardCell.y - cell.y <= 2;
+		}
+		else
+		{
+			return boardCell.y - cell.y == 1;
+		}
+	}
+}
+
+bool Pawn::canBeat(Point cell)
+{
+	if (type == BLACK)
+		return cell.y - boardCell.y == 1 &&
+			abs(boardCell.x - cell.x) == 1;
+	else
+		return boardCell.y - cell.y == 1 &&
+			abs(boardCell.x - cell.x) == 1;
 }
