@@ -128,24 +128,7 @@ void Board::initFigures()
 			type = BLACK;
 		Point p = { x, y };
 		string figName = figureTag.substr(2);
-		spFigure f;
-		if (figName == "bishop") {
-			f = new Bishop(type, p);
-		}else if (figName == "king") {
-			f = new King(type, p);
-		}
-		else if(figName == "pawn") {
-			f = new Pawn(type, p);
-		}
-		else if(figName == "queen") {
-			f = new Queen(type, p);
-		}
-		else if (figName == "knight") {
-			f = new Knight(type, p);
-		}
-		else if (figName == "rook") {
-			f = new Rook(type, p);
-		}
+		spFigure f = createFigure(figName, type, p);
 		f->attachTo(this);
 		f->setPosition(getCellPos(p));
 		f->setResAnim(ResourceManager::instance().getAnim(figureTag));
@@ -156,6 +139,26 @@ void Board::initFigures()
 	input.close();
 }
 
+Figure* Board::createFigure(string tag, FigureType type, Point pos) {
+	if (tag == "bishop")
+		return new Bishop(type, pos);
+	
+	if (tag == "king") 
+		return new King(type, pos);
+
+	if (tag == "pawn") 
+		return new Pawn(type, pos);
+	
+	if (tag == "queen") 
+		return new Queen(type, pos);
+	
+	if (tag == "knight") 
+		return new Knight(type, pos);
+	
+	if (tag == "rook") 
+		return new Rook(type, pos);
+	return nullptr;
+}
 spFigure Board::getTouched(Point touchedCell)
 {
 	for (auto& i : figures) {

@@ -25,6 +25,8 @@ private:
 
 	void initFigures();
 
+	Figure* createFigure(string tag, FigureType type, Point pos);
+
 	void touched(Event* event);
 	Vector2 getCellPos(Point cell);
 	Point getCell(Vector2 pos);
